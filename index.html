@@ -746,9 +746,58 @@ function closeMenu(){
 }
 
 function showHome(){
+    hideAllPages();
     document.getElementById("homePage").style.display = "block";
-    document.getElementById("mikeAuroraPage").style.display = "none";
+
+    const jsDay = new Date().getDay();
+    const index = [6,0,1,2,3,4,5][jsDay];
+    const day = days[index];
+    const genericDay = genericDayNames[index];
+
+    const container = document.getElementById("todayTasks");
+    container.innerHTML = "";
+
+    function addSection(title){
+        const h = document.createElement("div");
+        h.className = "channel-name";
+        h.textContent = title;
+        h.style.marginTop = "18px";
+        h.style.borderRadius = "12px";
+        container.appendChild(h);
+    }
+
+    // MIKE E AURORA
+    addSection("👨‍👧 MIKE E AURORA");
+    day.tasks.forEach((_, taskIndex) => {
+        container.appendChild(createTask(day, taskIndex));
+    });
+
+    // INSTAGRAM
+    addSection("📸 INSTAGRAM");
+    instagramTasksByDay[genericDay.key].forEach((name, taskIndex) => {
+        container.appendChild(
+            genericCreateTask("instagram", genericDay.key, name, taskIndex)
+        );
+    });
+
+    // TIKTOK
+    addSection("🎵 TIKTOK");
+    tiktokTasksByDay[genericDay.key].forEach((name, taskIndex) => {
+        container.appendChild(
+            genericCreateTask("tiktok", genericDay.key, name, taskIndex)
+        );
+    });
+
+    // THE BAM FAMILY
+    addSection("👨‍👩‍👧 THE BAM FAMILY");
+    bamTasksByDay[genericDay.key].forEach((name, taskIndex) => {
+        container.appendChild(
+            genericCreateTask("bam", genericDay.key, name, taskIndex)
+        );
+    });
+
     closeMenu();
+    window.scrollTo(0,0);
 }
 
 function showMikeAurora(){
