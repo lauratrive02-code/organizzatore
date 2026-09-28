@@ -362,7 +362,7 @@ main{
         ❤️ MIKE E LAURA
     </div>
 
-    <div class="menu-item">
+    <div class="menu-item" onclick="showBamFamily()">
         👨‍👩‍👧 THE BAM FAMILY
     </div>
 
@@ -372,6 +372,14 @@ main{
 
     <div class="menu-item">
         🌍 MIKE E LAURA LOVE
+    </div>
+
+    <div class="menu-item" onclick="showInstagram()">
+        📸 INSTAGRAM
+    </div>
+
+    <div class="menu-item" onclick="showTikTok()">
+        🎵 TIKTOK
     </div>
 
     <div class="menu-item">
@@ -424,6 +432,49 @@ main{
 
     <div class="bottom-space"></div>
 
+</div>
+
+
+<div id="bamFamilyPage" class="page" style="display:none;">
+    <div class="card">
+        <div class="title">THE BAM FAMILY</div>
+        <div class="subtitle">ORGANIZZAZIONE SETTIMANALE</div>
+        <div class="day-navigator">
+            <button onclick="changeGenericDay('bam',-1)">‹</button>
+            <div id="bamSelectedDay"></div>
+            <button onclick="changeGenericDay('bam',1)">›</button>
+        </div>
+        <div id="bamTasks"></div>
+    </div>
+    <div class="bottom-space"></div>
+</div>
+
+<div id="instagramPage" class="page" style="display:none;">
+    <div class="card">
+        <div class="title">INSTAGRAM</div>
+        <div class="subtitle">ATTIVITÀ GIORNALIERA</div>
+        <div class="day-navigator">
+            <button onclick="changeGenericDay('instagram',-1)">‹</button>
+            <div id="instagramSelectedDay"></div>
+            <button onclick="changeGenericDay('instagram',1)">›</button>
+        </div>
+        <div id="instagramTasks"></div>
+    </div>
+    <div class="bottom-space"></div>
+</div>
+
+<div id="tiktokPage" class="page" style="display:none;">
+    <div class="card">
+        <div class="title">TIKTOK</div>
+        <div class="subtitle">ATTIVITÀ GIORNALIERA</div>
+        <div class="day-navigator">
+            <button onclick="changeGenericDay('tiktok',-1)">‹</button>
+            <div id="tiktokSelectedDay"></div>
+            <button onclick="changeGenericDay('tiktok',1)">›</button>
+        </div>
+        <div id="tiktokTasks"></div>
+    </div>
+    <div class="bottom-space"></div>
 </div>
 
 </main>
@@ -520,6 +571,165 @@ const days = [
         ]
     }
 ];
+
+
+const genericDayNames = [
+    {key:"lunedi",name:"LUNEDÌ"},
+    {key:"martedi",name:"MARTEDÌ"},
+    {key:"mercoledi",name:"MERCOLEDÌ"},
+    {key:"giovedi",name:"GIOVEDÌ"},
+    {key:"venerdi",name:"VENERDÌ"},
+    {key:"sabato",name:"SABATO"},
+    {key:"domenica",name:"DOMENICA"}
+];
+
+const bamTasksByDay = {
+    lunedi:["Creare Short","Caricare Short"],
+    martedi:["Creare Short","Caricare Short"],
+    mercoledi:["Creare Short","Caricare Short"],
+    giovedi:["Creare Short","Caricare Short"],
+    venerdi:["Creare Short","Caricare Short"],
+    sabato:["Creare Short","Caricare Short"],
+    domenica:[
+        "Montare video",
+        "Caricare video",
+        "Tradurre lingue",
+        "Scaricare lingue tradotte",
+        "Caricare lingue tradotte",
+        "Monetizzazione, descrizione e titolo",
+        "Copertina YouTube",
+        "Programmare"
+    ]
+};
+
+const instagramTasksByDay = Object.fromEntries(
+    genericDayNames.map(d => [d.key, ["POST/REEL"]])
+);
+
+const tiktokTasksByDay = Object.fromEntries(
+    genericDayNames.map(d => [d.key, ["POST/REEL"]])
+);
+
+let genericSelected = {
+    bam: dayIndexFromDate(),
+    instagram: dayIndexFromDate(),
+    tiktok: dayIndexFromDate()
+};
+
+function dayIndexFromDate(){
+    const map=[6,0,1,2,3,4,5];
+    return map[new Date().getDay()];
+}
+
+function hideAllPages(){
+    document.querySelectorAll(".page").forEach(p => p.style.display="none");
+}
+
+function genericStorageKey(section,dayKey,index){
+    return section+"_"+dayKey+"_"+index;
+}
+
+function genericIsDone(section,dayKey,index){
+    return localStorage.getItem(genericStorageKey(section,dayKey,index))==="1";
+}
+
+function genericCreateTask(section,dayKey,name,index){
+    const done=genericIsDone(section,dayKey,index);
+
+    const task=document.createElement("div");
+    task.className="task"+(done?" done":"");
+
+    const title=document.createElement("div");
+    title.className="task-name";
+    title.textContent=name;
+
+    const button=document.createElement("button");
+    button.className="complete-btn";
+    button.classList.toggle("is-done",done);
+    button.textContent=done?"✓ COMPLETATO":"COMPLETA";
+
+    button.onclick=function(){
+        const newValue=!genericIsDone(section,dayKey,index);
+        localStorage.setItem(
+            genericStorageKey(section,dayKey,index),
+            newValue?"1":"0"
+        );
+        task.classList.toggle("done",newValue);
+        button.classList.toggle("is-done",newValue);
+        button.textContent=newValue?"✓ COMPLETATO":"COMPLETA";
+    };
+
+    task.appendChild(title);
+    task.appendChild(button);
+    return task;
+}
+
+function renderGeneric(section){
+    const index=genericSelected[section];
+    const day=genericDayNames[index];
+
+    let tasks;
+    let selectedId;
+    let containerId;
+
+    if(section==="bam"){
+        tasks=bamTasksByDay[day.key];
+        selectedId="bamSelectedDay";
+        containerId="bamTasks";
+    }else if(section==="instagram"){
+        tasks=instagramTasksByDay[day.key];
+        selectedId="instagramSelectedDay";
+        containerId="instagramTasks";
+    }else{
+        tasks=tiktokTasksByDay[day.key];
+        selectedId="tiktokSelectedDay";
+        containerId="tiktokTasks";
+    }
+
+    document.getElementById(selectedId).textContent=day.name;
+
+    const container=document.getElementById(containerId);
+    container.innerHTML="";
+
+    tasks.forEach((name,index)=>{
+        container.appendChild(
+            genericCreateTask(section,day.key,name,index)
+        );
+    });
+}
+
+function changeGenericDay(section,delta){
+    genericSelected[section]=(genericSelected[section]+delta+7)%7;
+    renderGeneric(section);
+}
+
+function showBamFamily(){
+    hideAllPages();
+    document.getElementById("bamFamilyPage").style.display="block";
+    genericSelected.bam=dayIndexFromDate();
+    renderGeneric("bam");
+    closeMenu();
+    window.scrollTo(0,0);
+}
+
+function showInstagram(){
+    hideAllPages();
+    document.getElementById("instagramPage").style.display="block";
+    genericSelected.instagram=dayIndexFromDate();
+    renderGeneric("instagram");
+    closeMenu();
+    window.scrollTo(0,0);
+}
+
+function showTikTok(){
+    hideAllPages();
+    document.getElementById("tiktokPage").style.display="block";
+    genericSelected.tiktok=dayIndexFromDate();
+    renderGeneric("tiktok");
+    closeMenu();
+    window.scrollTo(0,0);
+}
+
 
 const dayIndexFromJS = [6,0,1,2,3,4,5];
 
