@@ -864,12 +864,9 @@ function renderToday(){
     const day = days[dayIndexFromJS[new Date().getDay()]];
 
     document.getElementById("todaySubtitle").textContent =
-        day.name + " · MIKE E AURORA";
+        day.name + " · TUTTE LE ATTIVITÀ";
 
-    renderTasks(
-        document.getElementById("todayTasks"),
-        day
-    );
+    showHome();
 }
 
 function renderMikeAurora(){
