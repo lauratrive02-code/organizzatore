@@ -258,6 +258,79 @@ main{
 }
 </style>
 
+
+<style>
+
+/* NAVIGAZIONE GIORNI */
+.day-navigator{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:0 14px 18px;
+    background:#17395c;
+    color:white;
+    border-radius:15px;
+    overflow:hidden;
+}
+
+.day-navigator button{
+    width:60px;
+    height:52px;
+    border:0;
+    background:#17395c;
+    color:white;
+    font-size:36px;
+    font-weight:300;
+    cursor:pointer;
+}
+
+.day-navigator button:active{
+    background:#102b46;
+}
+
+#selectedDay{
+    flex:1;
+    text-align:center;
+    font-size:18px;
+    font-weight:900;
+}
+
+/* COMPLETA */
+.complete-btn{
+    background:#d92d20 !important;
+    color:white !important;
+    width:100%;
+    border:0;
+    border-radius:12px;
+    padding:13px;
+    font-size:15px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+.complete-btn.is-done{
+    background:#20ad4b !important;
+}
+
+.task.done{
+    opacity:1;
+}
+
+.task.done .task-name{
+    text-decoration:line-through;
+    opacity:.6;
+}
+
+#todayTasks{
+    padding-bottom:10px;
+}
+
+#mikeAuroraTasks{
+    padding-bottom:10px;
+}
+
+</style>
+
 </head>
 
 <body>
@@ -279,9 +352,9 @@ main{
 
     <div class="sidebar-title">ORGANIZZATORE</div>
 
-    <div class="menu-item">🏠 HOME / OGGI</div>
+    <div class="menu-item" onclick="showHome()">🏠 HOME / OGGI</div>
 
-    <div class="menu-item">
+    <div class="menu-item" onclick="showMikeAurora()">
         👨‍👧 MIKE E AURORA
     </div>
 
@@ -311,332 +384,43 @@ main{
 
 </nav>
 
+
 <main>
 
-<div class="card">
+<div id="homePage" class="page">
+    <div class="card">
+        <div class="date" id="todayDate"></div>
 
-    <div class="date" id="todayDate"></div>
+        <div class="title">OGGI</div>
 
-    <div style="
-        text-align:center;
-        padding:55px 20px 70px;
-    ">
+        <div class="subtitle" id="todaySubtitle"></div>
 
-        <div style="
-            font-size:17px;
-            font-weight:800;
-            letter-spacing:.6px;
-            color:#17395c;
-        ">
-            VISUALIZZAZIONI OGGI
-        </div>
-
-        <div id="totalViews" style="
-            font-size:58px;
-            font-weight:900;
-            color:#17395c;
-            margin-top:15px;
-        ">
-            0
-        </div>
-
+        <div id="todayTasks"></div>
     </div>
-
 </div>
 
 
+<div id="mikeAuroraPage" class="page" style="display:none;">
 
-<div id="mikeAuroraPage" class="channel-page">
+    <div class="card">
 
-    <div class="title">
-        MIKE E AURORA
+        <div class="title">
+            MIKE E AURORA
+        </div>
+
+        <div class="subtitle">
+            ORGANIZZAZIONE SETTIMANALE
+        </div>
+
+        <div class="day-navigator">
+            <button onclick="changeDay(-1)">‹</button>
+            <div id="selectedDay"></div>
+            <button onclick="changeDay(1)">›</button>
+        </div>
+
+        <div id="mikeAuroraTasks"></div>
+
     </div>
-
-    <div class="subtitle">
-        ORGANIZZAZIONE SETTIMANALE
-    </div>
-
-    
-    <section class="day-section">
-        <div class="day-title">LUNEDÌ</div>
-        
-        <div class="task" data-task-id="mike-aurora-lunedi-1">
-            <div class="task-name">Scaricare video YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-lunedi-2">
-            <div class="task-name">Convertire video di un'ora</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-lunedi-3">
-            <div class="task-name">Caricare su YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-lunedi-4">
-            <div class="task-name">Monetizzazione, descrizione e titolo</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-lunedi-5">
-            <div class="task-name">Copertina YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-lunedi-6">
-            <div class="task-name">Programmare</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">MARTEDÌ</div>
-        
-        <div class="task" data-task-id="mike-aurora-martedi-1">
-            <div class="task-name">Creare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-martedi-2">
-            <div class="task-name">Caricare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-martedi-3">
-            <div class="task-name">Programmare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-martedi-4">
-            <div class="task-name">Creare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-martedi-5">
-            <div class="task-name">Caricare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-martedi-6">
-            <div class="task-name">Programmare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">MERCOLEDÌ</div>
-        
-        <div class="task" data-task-id="mike-aurora-mercoledi-1">
-            <div class="task-name">Scaricare video YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-mercoledi-2">
-            <div class="task-name">Convertire video di un'ora</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-mercoledi-3">
-            <div class="task-name">Caricare su YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-mercoledi-4">
-            <div class="task-name">Monetizzazione, descrizione e titolo</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-mercoledi-5">
-            <div class="task-name">Copertina YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-mercoledi-6">
-            <div class="task-name">Programmare</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">GIOVEDÌ</div>
-        
-        <div class="task" data-task-id="mike-aurora-giovedi-1">
-            <div class="task-name">Creare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-giovedi-2">
-            <div class="task-name">Caricare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-giovedi-3">
-            <div class="task-name">Programmare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-giovedi-4">
-            <div class="task-name">Creare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-giovedi-5">
-            <div class="task-name">Caricare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-giovedi-6">
-            <div class="task-name">Programmare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">VENERDÌ</div>
-        
-        <div class="task" data-task-id="mike-aurora-venerdi-1">
-            <div class="task-name">Scaricare video YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-venerdi-2">
-            <div class="task-name">Convertire video di un'ora</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-venerdi-3">
-            <div class="task-name">Caricare su YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-venerdi-4">
-            <div class="task-name">Monetizzazione, descrizione e titolo</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-venerdi-5">
-            <div class="task-name">Copertina YouTube</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-venerdi-6">
-            <div class="task-name">Programmare</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">SABATO</div>
-        
-        <div class="task" data-task-id="mike-aurora-sabato-1">
-            <div class="task-name">Creare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-sabato-2">
-            <div class="task-name">Caricare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-sabato-3">
-            <div class="task-name">Programmare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-sabato-4">
-            <div class="task-name">Creare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-sabato-5">
-            <div class="task-name">Caricare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-sabato-6">
-            <div class="task-name">Programmare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
-    <section class="day-section">
-        <div class="day-title">DOMENICA</div>
-        
-        <div class="task" data-task-id="mike-aurora-domenica-1">
-            <div class="task-name">Creare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-domenica-2">
-            <div class="task-name">Caricare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-domenica-3">
-            <div class="task-name">Programmare Short 1</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-domenica-4">
-            <div class="task-name">Creare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-domenica-5">
-            <div class="task-name">Caricare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-        <div class="task" data-task-id="mike-aurora-domenica-6">
-            <div class="task-name">Programmare Short 2</div>
-            <button class="complete-btn" onclick="completeTask(this)">
-                COMPLETA
-            </button>
-        </div>
-    </section>
 
     <div class="bottom-space"></div>
 
@@ -644,32 +428,216 @@ main{
 
 </main>
 
+
 <script>
 
 const sidebar = document.getElementById("sidebar");
 const overlay = document.getElementById("overlay");
+
+const days = [
+    {
+        key: "lunedi",
+        name: "LUNEDÌ",
+        tasks: [
+            "Scaricare video YouTube",
+            "Convertire video di un'ora",
+            "Caricare su YouTube",
+            "Monetizzazione, descrizione e titolo",
+            "Copertina YouTube",
+            "Programmare"
+        ]
+    },
+    {
+        key: "martedi",
+        name: "MARTEDÌ",
+        tasks: [
+            "Creare Short 1",
+            "Caricare Short 1",
+            "Programmare Short 1",
+            "Creare Short 2",
+            "Caricare Short 2",
+            "Programmare Short 2"
+        ]
+    },
+    {
+        key: "mercoledi",
+        name: "MERCOLEDÌ",
+        tasks: [
+            "Scaricare video YouTube",
+            "Convertire video di un'ora",
+            "Caricare su YouTube",
+            "Monetizzazione, descrizione e titolo",
+            "Copertina YouTube",
+            "Programmare"
+        ]
+    },
+    {
+        key: "giovedi",
+        name: "GIOVEDÌ",
+        tasks: [
+            "Creare Short 1",
+            "Caricare Short 1",
+            "Programmare Short 1",
+            "Creare Short 2",
+            "Caricare Short 2",
+            "Programmare Short 2"
+        ]
+    },
+    {
+        key: "venerdi",
+        name: "VENERDÌ",
+        tasks: [
+            "Scaricare video YouTube",
+            "Convertire video di un'ora",
+            "Caricare su YouTube",
+            "Monetizzazione, descrizione e titolo",
+            "Copertina YouTube",
+            "Programmare"
+        ]
+    },
+    {
+        key: "sabato",
+        name: "SABATO",
+        tasks: [
+            "Creare Short 1",
+            "Caricare Short 1",
+            "Programmare Short 1",
+            "Creare Short 2",
+            "Caricare Short 2",
+            "Programmare Short 2"
+        ]
+    },
+    {
+        key: "domenica",
+        name: "DOMENICA",
+        tasks: [
+            "Creare Short 1",
+            "Caricare Short 1",
+            "Programmare Short 1",
+            "Creare Short 2",
+            "Caricare Short 2",
+            "Programmare Short 2"
+        ]
+    }
+];
+
+const dayIndexFromJS = [6,0,1,2,3,4,5];
+
+let selectedDayIndex = dayIndexFromJS[new Date().getDay()];
 
 function toggleMenu(){
     sidebar.classList.toggle("open");
     overlay.classList.toggle("show");
 }
 
-function completeTask(button){
-
-    const task = button.closest(".task");
-
-    if (task.classList.contains("done")) {
-        task.classList.remove("done");
-        button.innerHTML = "COMPLETA";
-        button.disabled = false;
-    } else {
-        task.classList.add("done");
-        button.innerHTML = "✓ COMPLETATO";
-        button.disabled = false;
-    }
+function closeMenu(){
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
 }
 
-const now = new Date();
+function showHome(){
+    document.getElementById("homePage").style.display = "block";
+    document.getElementById("mikeAuroraPage").style.display = "none";
+    closeMenu();
+}
+
+function showMikeAurora(){
+    document.getElementById("homePage").style.display = "none";
+    document.getElementById("mikeAuroraPage").style.display = "block";
+    selectedDayIndex = dayIndexFromJS[new Date().getDay()];
+    renderMikeAurora();
+    closeMenu();
+    window.scrollTo(0,0);
+}
+
+function storageKey(dayKey, taskIndex){
+    return "mikeAurora_" + dayKey + "_" + taskIndex;
+}
+
+function isDone(dayKey, taskIndex){
+    return localStorage.getItem(storageKey(dayKey, taskIndex)) === "1";
+}
+
+function setDone(dayKey, taskIndex, value){
+    localStorage.setItem(storageKey(dayKey, taskIndex), value ? "1" : "0");
+}
+
+function createTask(day, taskIndex){
+    const done = isDone(day.key, taskIndex);
+
+    const task = document.createElement("div");
+    task.className = "task" + (done ? " done" : "");
+
+    const name = document.createElement("div");
+    name.className = "task-name";
+    name.textContent = day.tasks[taskIndex];
+
+    const button = document.createElement("button");
+    button.className = "complete-btn";
+    button.textContent = done ? "✓ COMPLETATO" : "COMPLETA";
+    button.classList.toggle("is-done", done);
+
+    button.onclick = function(){
+        const newValue = !isDone(day.key, taskIndex);
+
+        setDone(day.key, taskIndex, newValue);
+
+        task.classList.toggle("done", newValue);
+        button.classList.toggle("is-done", newValue);
+        button.textContent = newValue ? "✓ COMPLETATO" : "COMPLETA";
+    };
+
+    task.appendChild(name);
+    task.appendChild(button);
+
+    return task;
+}
+
+function renderTasks(container, day){
+    container.innerHTML = "";
+
+    day.tasks.forEach((_, index) => {
+        container.appendChild(createTask(day, index));
+    });
+}
+
+function renderToday(){
+    const day = days[dayIndexFromJS[new Date().getDay()]];
+
+    document.getElementById("todaySubtitle").textContent =
+        day.name + " · MIKE E AURORA";
+
+    renderTasks(
+        document.getElementById("todayTasks"),
+        day
+    );
+}
+
+function renderMikeAurora(){
+    const day = days[selectedDayIndex];
+
+    document.getElementById("selectedDay").textContent =
+        day.name;
+
+    renderTasks(
+        document.getElementById("mikeAuroraTasks"),
+        day
+    );
+}
+
+function changeDay(direction){
+    selectedDayIndex += direction;
+
+    if(selectedDayIndex < 0){
+        selectedDayIndex = days.length - 1;
+    }
+
+    if(selectedDayIndex >= days.length){
+        selectedDayIndex = 0;
+    }
+
+    renderMikeAurora();
+}
 
 const fullDate = new Intl.DateTimeFormat(
     "it-IT",
@@ -679,7 +647,7 @@ const fullDate = new Intl.DateTimeFormat(
         month:"long",
         year:"numeric"
     }
-).format(now);
+).format(new Date());
 
 const shortDate = new Intl.DateTimeFormat(
     "it-IT",
@@ -688,7 +656,7 @@ const shortDate = new Intl.DateTimeFormat(
         day:"numeric",
         month:"long"
     }
-).format(now);
+).format(new Date());
 
 document.getElementById("todayDate").innerText =
     fullDate.charAt(0).toUpperCase() + fullDate.slice(1);
@@ -696,7 +664,11 @@ document.getElementById("todayDate").innerText =
 document.getElementById("headerDay").innerText =
     shortDate.toUpperCase();
 
+renderToday();
+renderMikeAurora();
+
 </script>
+
 
 </body>
 </html>
